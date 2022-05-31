@@ -2,7 +2,7 @@ const data = {
   products: [
     {
       name: "Free Shirt",
-
+      slug: "free-shirt",
       category: "Shirts",
 
       image: "/images/shirt1.jpg",
@@ -22,6 +22,7 @@ const data = {
 
     {
       name: "Fit Shirt",
+      slug: "fit-shirt",
 
       category: "Shirts",
 
@@ -42,6 +43,7 @@ const data = {
 
     {
       name: "Slim Shirt",
+      slug: "slim-shirt",
 
       category: "Shirts",
 
@@ -62,6 +64,7 @@ const data = {
 
     {
       name: "Golf Pants",
+      slug: "gold-pants",
 
       category: "Pants",
 
@@ -82,6 +85,7 @@ const data = {
 
     {
       name: "Fit Pants",
+      slug: "fit-pants",
 
       category: "Pants",
 

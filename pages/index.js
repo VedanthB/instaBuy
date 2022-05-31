@@ -6,8 +6,10 @@ import {
   CardMedia,
   Grid,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
+import NextLink from "next/link";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Layout } from "../components";
 import { data } from "../utils";
@@ -21,16 +23,19 @@ export default function Home() {
           {data?.products.map((product) => (
             <Grid item md={4} key={product.name}>
               <Card>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={product.image}
-                    title={product.name}
-                  />
-                  <CardContent>
-                    <Typography>{product.name}</Typography>
-                  </CardContent>
-                </CardActionArea>
+                <NextLink href={`/product/${product.slug}`} passHref>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      image={product.image}
+                      title={product.name}
+                    />
+                    <CardContent>
+                      <Typography>{product.name}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </NextLink>
+
                 <CardActions
                   sx={{
                     display: "flex",
@@ -39,10 +44,14 @@ export default function Home() {
                   }}
                 >
                   <Typography>₹{product.price}</Typography>
-
-                  <IconButton color="primary" aria-label="add to shopping cart">
-                    <AddShoppingCartIcon />
-                  </IconButton>
+                  <Tooltip title="add to shopping cart">
+                    <IconButton
+                      color="primary"
+                      aria-label="add to shopping cart"
+                    >
+                      <AddShoppingCartIcon />
+                    </IconButton>
+                  </Tooltip>
                 </CardActions>
               </Card>
             </Grid>
