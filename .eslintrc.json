@@ -29,7 +29,15 @@
     ],
     "react/jsx-props-no-spreading": "off",
     "react/function-component-definition": ["off"],
-    "arrow-body-style": ["off"]
+    "arrow-body-style": ["off"],
+    "jsx-a11y/anchor-is-valid": [
+      "off",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["noHref", "invalidHref", "preferButton"]
+      }
+    ]
   },
   "settings": {
     "react": {
