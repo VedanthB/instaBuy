@@ -11,11 +11,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-const Layout = ({ children }) => {
+const Layout = ({ title, description, children }) => {
   return (
     <div>
       <Head>
-        <title> instaBuy </title>
+        <title>{title ? `${title} - instaBuy` : "instaBuy"}</title>
+        {description && <meta name="description" content={description} />}
       </Head>
       <AppBar
         position="static"
