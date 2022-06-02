@@ -85,6 +85,7 @@ const data = {
 
     {
       name: "Fit Pants",
+
       slug: "fit-pants",
 
       category: "Pants",
@@ -106,6 +107,8 @@ const data = {
 
     {
       name: "Classic Pants",
+
+      slug: "classic-Pants",
 
       category: "Pants",
 
