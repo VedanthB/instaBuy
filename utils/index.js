@@ -4,6 +4,6 @@
 
 import data from "./data";
 import createEmotionCache from "./createEmotionCache";
-import theme from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 
-export { data, createEmotionCache, theme };
+export { data, createEmotionCache, lightTheme, darkTheme };
