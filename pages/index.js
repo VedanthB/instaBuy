@@ -12,15 +12,16 @@ import {
 import NextLink from "next/link";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Layout } from "../components";
-import { data } from "../utils";
+import { db } from "../utils";
+import Product from "../model/product";
 
-export default function Home() {
+export default function Home({ products }) {
   return (
     <Layout>
       <div>
         <h1>Products</h1>
         <Grid container spacing={3}>
-          {data?.products.map((product) => (
+          {products.map((product) => (
             <Grid item md={4} key={product.name}>
               <Card>
                 <NextLink href={`/product/${product.slug}`} passHref>
@@ -60,4 +61,15 @@ export default function Home() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  await db.connect();
+  const products = await Product.find({}).lean();
+  await db.disconnect();
+  return {
+    props: {
+      products: products.map(db.convertDocToObj),
+    },
+  };
 }

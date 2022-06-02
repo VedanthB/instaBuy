@@ -37,6 +37,17 @@
         "specialLink": ["hrefLeft", "hrefRight"],
         "aspects": ["noHref", "invalidHref", "preferButton"]
       }
+    ],
+    "no-underscore-dangle": [
+      "off",
+      {
+        "allow": ["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"],
+        "allowAfterThis": false,
+        "allowAfterSuper": false,
+        "allowAfterThisConstructor": false,
+        "enforceInMethodNames": true,
+        "allowFunctionParams": true
+      }
     ]
   },
   "settings": {
