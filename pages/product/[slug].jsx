@@ -1,6 +1,8 @@
 import React from "react";
 import NextLink from "next/link";
+import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import {
   Button,
   Card,
@@ -13,11 +15,31 @@ import {
 import { Layout } from "../../components";
 import { db } from "../../utils";
 import Product from "../../model/product";
+import { useContextState } from "../../context/StateProvider";
 
 export default function ProductScreen({ product }) {
+  const router = useRouter();
+
   if (!product) {
     return <div>Product Not Found</div>;
   }
+
+  const { stateDispatch } = useContextState();
+
+  const addToCartHandler = async () => {
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock <= 0) {
+      // eslint-disable-next-line no-alert
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    stateDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity: 1 },
+    });
+    router.push("/cart");
+  };
+
   return (
     <Layout title={product.name} description={product.description}>
       <div sx={{ marginTop: 10, marginBottom: 10 }}>
@@ -86,7 +108,12 @@ export default function ProductScreen({ product }) {
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button fullWidth variant="contained" color="primary">
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCartHandler}
+                >
                   Add to cart
                 </Button>
               </ListItem>

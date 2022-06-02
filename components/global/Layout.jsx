@@ -10,23 +10,29 @@ import {
   Link,
   IconButton,
   styled,
+  Badge,
 } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import Cookies from "js-cookie";
-import { useTheme } from "../../context";
+
 import { useSelectedTheme } from "../../hooks";
 import { darkTheme, lightTheme } from "../../utils";
+import { useContextState } from "../../context/StateProvider";
 
 const Layout = ({ title, description, children }) => {
   const {
-    state: { darkMode },
-    themeDispatch,
-  } = useTheme();
+    state: {
+      darkMode,
+      cart: { cartItems },
+    },
+
+    stateDispatch,
+  } = useContextState();
 
   const { setSelectedTheme } = useSelectedTheme();
 
   const darkModeChangeHandler = () => {
-    themeDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
+    stateDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
   };
 
   useEffect(() => {
@@ -77,9 +83,17 @@ const Layout = ({ title, description, children }) => {
               sx={{ m: 1 }}
             />
             <NextLink href="/cart" passHref>
-              <IconButton color="primary" aria-label="cart">
-                <ShoppingCartOutlinedIcon />
-              </IconButton>
+              {cartItems.length > 0 ? (
+                <Badge color="secondary" badgeContent={cartItems.length}>
+                  <IconButton color="primary" aria-label="cart">
+                    <ShoppingCartOutlinedIcon />
+                  </IconButton>
+                </Badge>
+              ) : (
+                <IconButton color="primary" aria-label="cart">
+                  <ShoppingCartOutlinedIcon />
+                </IconButton>
+              )}
             </NextLink>
             <NextLink href="/login" passHref>
               <Link>Login</Link>

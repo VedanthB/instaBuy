@@ -1,3 +1,3 @@
-import { ThemeContextProvider, useTheme } from "./ThemeProvider";
+import { StateContextProvider, useContextState } from "./StateProvider";
 
-export { ThemeContextProvider, useTheme };
+export { StateContextProvider, useContextState };
