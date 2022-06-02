@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -24,6 +25,8 @@ import { useContextState } from "../context/StateProvider";
 import { Layout } from "../components";
 
 const CartScreen = () => {
+  const router = useRouter();
+
   const { state, stateDispatch } = useContextState();
 
   const {
@@ -42,6 +45,10 @@ const CartScreen = () => {
 
   const removeItemHandler = (item) => {
     stateDispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+
+  const checkoutHandler = () => {
+    router.push("/shipping");
   };
 
   return (
@@ -134,7 +141,12 @@ const CartScreen = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button variant="contained" color="primary" fullWidth>
+                  <Button
+                    onClick={checkoutHandler}
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
                     Check Out
                   </Button>
                 </ListItem>
