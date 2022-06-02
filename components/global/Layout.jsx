@@ -75,7 +75,6 @@ const Layout = ({ title, description, children }) => {
               checked={darkMode}
               onChange={darkModeChangeHandler}
               sx={{ m: 1 }}
-              defaultChecked
             />
             <NextLink href="/cart" passHref>
               <IconButton color="primary" aria-label="cart">
