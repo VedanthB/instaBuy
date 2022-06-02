@@ -24,18 +24,21 @@ export default function ProductScreen({ product }) {
     return <div>Product Not Found</div>;
   }
 
-  const { stateDispatch } = useContextState();
+  const { state, stateDispatch } = useContextState();
 
   const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+
+    const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock <= 0) {
+    if (data.countInStock < quantity) {
       // eslint-disable-next-line no-alert
       window.alert("Sorry. Product is out of stock");
       return;
     }
     stateDispatch({
       type: "CART_ADD_ITEM",
-      payload: { ...product, quantity: 1 },
+      payload: { ...product, quantity },
     });
     router.push("/cart");
   };
