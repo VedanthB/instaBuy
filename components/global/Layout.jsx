@@ -1,6 +1,7 @@
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
   AppBar,
@@ -11,6 +12,9 @@ import {
   IconButton,
   styled,
   Badge,
+  Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import Cookies from "js-cookie";
@@ -20,10 +24,13 @@ import { darkTheme, lightTheme } from "../../utils";
 import { useContextState } from "../../context/StateProvider";
 
 const Layout = ({ title, description, children }) => {
+  const router = useRouter();
+
   const {
     state: {
       darkMode,
       cart: { cartItems },
+      userInfo,
     },
 
     stateDispatch,
@@ -38,11 +45,29 @@ const Layout = ({ title, description, children }) => {
   useEffect(() => {
     const newDarkMode = !darkMode;
 
-    Cookies.set("darkMode", newDarkMode ? "ON" : "OFF");
+    Cookies.set("darkMode", newDarkMode ? "ON" : "OFF", { sameSite: "strict" });
 
     // eslint-disable-next-line no-unused-expressions
     newDarkMode ? setSelectedTheme(darkTheme) : setSelectedTheme(lightTheme);
   }, [darkMode]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const loginClickHandler = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const loginMenuCloseHandler = () => {
+    setAnchorEl(null);
+  };
+
+  const logoutClickHandler = () => {
+    setAnchorEl(null);
+    stateDispatch({ type: "USER_LOGOUT" });
+    Cookies.remove("userInfo");
+    Cookies.remove("cartItems");
+    router.push("/");
+  };
 
   return (
     <div>
@@ -95,9 +120,37 @@ const Layout = ({ title, description, children }) => {
                 </IconButton>
               )}
             </NextLink>
-            <NextLink href="/login" passHref>
-              <Link>Login</Link>
-            </NextLink>
+
+            {userInfo ? (
+              <>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={loginClickHandler}
+                  // className={classes.navbarButton}
+                  sx={{ color: "#ffffff", textTransform: "initial" }}
+                >
+                  {userInfo.name}
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={loginMenuCloseHandler}
+                >
+                  <MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
+                  <MenuItem onClick={loginMenuCloseHandler}>
+                    My account
+                  </MenuItem>
+                  <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <NextLink href="/login" passHref>
+                <Link>Login</Link>
+              </NextLink>
+            )}
           </div>
         </Toolbar>
       </AppBar>

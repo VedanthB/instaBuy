@@ -5,12 +5,13 @@ const StateContext = createContext();
 
 const initialState = {
   // eslint-disable-next-line no-unneeded-ternary
-  darkMode: Cookies.get("darkMode") === "ON" ? true : false,
+  darkMode: false,
   cart: {
     cartItems: Cookies.get("cartItems")
       ? JSON.parse(Cookies.get("cartItems"))
       : [],
   },
+  userInfo: null,
 };
 
 const reducer = (state, action) => {
@@ -33,7 +34,9 @@ const reducer = (state, action) => {
           )
         : [...state.cart.cartItems, newItem];
 
-      Cookies.set("cartItems", JSON.stringify(cartItems));
+      Cookies.set("cartItems", JSON.stringify(cartItems), {
+        sameSite: "strict",
+      });
 
       return { ...state, cart: { ...state.cart, cartItems } };
     }
@@ -42,10 +45,16 @@ const reducer = (state, action) => {
         (item) => item._id !== action.payload._id,
       );
 
-      Cookies.set("cartItems", JSON.stringify(cartItems));
+      Cookies.set("cartItems", JSON.stringify(cartItems), {
+        sameSite: "strict",
+      });
 
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case "USER_LOGIN":
+      return { ...state, userInfo: action.payload };
+    case "USER_LOGOUT":
+      return { ...state, userInfo: null, cart: { cartItems: [] } };
     default:
       return state;
   }
@@ -63,6 +72,13 @@ export const StateContextProvider = ({ children }) => {
 
     if (Cookies.get("darkMode") === "OFF") {
       stateDispatch({ type: "DARK_MODE_OFF" });
+    }
+
+    if (Cookies.get("userInfo")) {
+      stateDispatch({
+        type: "USER_LOGIN",
+        payload: JSON.parse(Cookies.get("userInfo")),
+      });
     }
   }, []);
 
