@@ -1,5 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   Button,
@@ -94,7 +95,7 @@ const CartScreen = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid md={3} xs={12}>
+          <Grid item md={3} xs={12}>
             <Card>
               <List>
                 <ListItem>
@@ -118,4 +119,4 @@ const CartScreen = () => {
   );
 };
 
-export default CartScreen;
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
