@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { useContextState } from "../context/StateProvider";
 import { Layout } from "../components";
+import { getError } from "../utils";
 
 export default function Register() {
   const {
@@ -68,10 +69,7 @@ export default function Register() {
 
       router.push(redirect || "/");
     } catch (err) {
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        { variant: "error" },
-      );
+      enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
   return (

@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { Layout } from "../components";
 import { useContextState } from "../context/StateProvider";
+import { getError } from "../utils";
 
 export default function Login() {
   const {
@@ -60,10 +61,7 @@ export default function Login() {
       router.push(redirect || "/");
     } catch (err) {
       // eslint-disable-next-line no-alert
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        { variant: "error" },
-      );
+      enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
 
