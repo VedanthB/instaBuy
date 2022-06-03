@@ -9,6 +9,7 @@ const initialState = {
   cart: {
     cartItems: [],
     shippingAddress: {},
+    paymentMethod: "",
   },
   userInfo: null,
 };
@@ -112,6 +113,13 @@ export const StateContextProvider = ({ children }) => {
       stateDispatch({
         type: "SAVE_SHIPPING_ADDRESS",
         payload: JSON.parse(Cookies.get("shippingAddress")),
+      });
+    }
+
+    if (Cookies.get("paymentMethod")) {
+      stateDispatch({
+        type: "SAVE_PAYMENT_METHOD",
+        payload: JSON.parse(Cookies.get("paymentMethod")),
       });
     }
   }, []);

@@ -45,7 +45,9 @@ export default function Payment() {
     } else {
       stateDispatch({ type: "SAVE_PAYMENT_METHOD", payload: paymentMethod });
 
-      Cookies.set("paymentMethod", paymentMethod);
+      Cookies.set("paymentMethod", JSON.stringify(paymentMethod), {
+        sameSite: "strict",
+      });
 
       router.push("/placeorder");
     }
