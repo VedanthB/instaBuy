@@ -28,7 +28,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 import { getError } from "../../utils/error";
-import { CheckoutWizard, Layout } from "../../components";
+import { Layout } from "../../components";
 import { useContextState } from "../../context/StateProvider";
 
 function reducer(state, action) {
@@ -169,7 +169,6 @@ function Order({ params }) {
 
   return (
     <Layout title={`Order ${orderId}`}>
-      <CheckoutWizard activeStep={3} />
       <Typography component="h1" variant="h1">
         Order {orderId}
       </Typography>
