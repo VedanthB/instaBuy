@@ -2,12 +2,12 @@ import nc from "next-connect";
 import Order from "../../../model/order";
 import Product from "../../../model/product";
 import User from "../../../model/user";
-import { db, isAuth, onError } from "../../../utils";
+import { db, isAdmin, isAuth, onError } from "../../../utils";
 
 const handler = nc({
   onError,
 });
-handler.use(isAuth);
+handler.use(isAuth, isAdmin);
 
 handler.get(async (req, res) => {
   await db.connect();

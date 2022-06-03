@@ -74,7 +74,7 @@ function AdminDashboard() {
   }, []);
 
   return (
-    <Layout title="Order History">
+    <Layout title="Admin Dashboard">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>

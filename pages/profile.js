@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import NexLink from "next/link";
+import NextLink from "next/link";
 import React, { useEffect } from "react";
 import { useSnackbar } from "notistack";
 import { Controller, useForm } from "react-hook-form";
@@ -80,16 +80,16 @@ function Profile() {
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
-              <NexLink href="/profile" passHref>
+              <NextLink href="/profile" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="User Profile" />
                 </ListItem>
-              </NexLink>
-              <NexLink href="/order-history" passHref>
+              </NextLink>
+              <NextLink href="/order-history" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Order History" />
                 </ListItem>
-              </NexLink>
+              </NextLink>
             </List>
           </Card>
         </Grid>
