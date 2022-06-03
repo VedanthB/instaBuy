@@ -7,9 +7,8 @@ const initialState = {
   // eslint-disable-next-line no-unneeded-ternary
   darkMode: false,
   cart: {
-    cartItems: Cookies.get("cartItems")
-      ? JSON.parse(Cookies.get("cartItems"))
-      : [],
+    cartItems: [],
+    shippingAddress: {},
   },
   userInfo: null,
 };
@@ -19,8 +18,10 @@ const reducer = (state, action) => {
   switch (type) {
     case "DARK_MODE_ON":
       return { ...state, darkMode: true };
+
     case "DARK_MODE_OFF":
       return { ...state, darkMode: false };
+
     case "CART_ADD_ITEM": {
       const newItem = payload;
 
@@ -40,9 +41,13 @@ const reducer = (state, action) => {
 
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+
+    case "GET_CART_ITEM":
+      return { ...state, cart: { ...state.cart, cartItems: payload } };
+
     case "CART_REMOVE_ITEM": {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id,
+        (item) => item._id !== payload._id,
       );
 
       Cookies.set("cartItems", JSON.stringify(cartItems), {
@@ -51,10 +56,19 @@ const reducer = (state, action) => {
 
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+
     case "USER_LOGIN":
-      return { ...state, userInfo: action.payload };
+      return { ...state, userInfo: payload };
+
     case "USER_LOGOUT":
       return { ...state, userInfo: null, cart: { cartItems: [] } };
+
+    case "SAVE_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: payload },
+      };
+
     default:
       return state;
   }
@@ -78,6 +92,20 @@ export const StateContextProvider = ({ children }) => {
       stateDispatch({
         type: "USER_LOGIN",
         payload: JSON.parse(Cookies.get("userInfo")),
+      });
+    }
+
+    if (Cookies.get("cartItems")) {
+      stateDispatch({
+        type: "GET_CART_ITEM",
+        payload: JSON.parse(Cookies.get("cartItems")),
+      });
+    }
+
+    if (Cookies.get("shippingAddress")) {
+      stateDispatch({
+        type: "SAVE_SHIPPING_ADDRESS",
+        payload: JSON.parse(Cookies.get("shippingAddress")),
       });
     }
   }, []);
