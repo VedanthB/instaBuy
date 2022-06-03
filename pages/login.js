@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,10 +13,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { useSnackbar } from "notistack";
 import { Layout } from "../components";
 import { useContextState } from "../context/StateProvider";
 
 export default function Login() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +43,10 @@ export default function Login() {
     }
   }, []);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  // eslint-disable-next-line no-shadow
+  const submitHandler = async ({ email, password }) => {
+    closeSnackbar();
+
     try {
       const { data } = await axios.post("/api/users/login", {
         email,
@@ -47,14 +60,17 @@ export default function Login() {
       router.push(redirect || "/");
     } catch (err) {
       // eslint-disable-next-line no-alert
-      alert(err.response.data ? err.response.data.message : err.message);
+      enqueueSnackbar(
+        err.response.data ? err.response.data.message : err.message,
+        { variant: "error" },
+      );
     }
   };
 
   return (
     <Layout title="Login">
       <form
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
         style={{ maxWidth: 800, margin: "0 auto" }}
       >
         <Typography sx={{ textAlign: "center" }} component="h1" variant="h1">
@@ -62,23 +78,63 @@ export default function Login() {
         </Typography>
         <List>
           <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="email"
-              label="Email"
-              inputProps={{ type: "email" }}
-              onChange={(e) => setEmail(e.target.value)}
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  inputProps={{ type: "email" }}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    // eslint-disable-next-line no-nested-ternary
+                    errors.email
+                      ? errors.email.type === "pattern"
+                        ? "Email is not valid"
+                        : "Email is required"
+                      : ""
+                  }
+                  {...field}
+                />
+              )}
             />
           </ListItem>
           <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="password"
-              label="Password"
-              inputProps={{ type: "password" }}
-              onChange={(e) => setPassword(e.target.value)}
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                minLength: 6,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="password"
+                  label="Password"
+                  inputProps={{ type: "password" }}
+                  error={Boolean(errors.password)}
+                  helperText={
+                    // eslint-disable-next-line no-nested-ternary
+                    errors.password
+                      ? errors.password.type === "minLength"
+                        ? "Password length is more than 5"
+                        : "Password is required"
+                      : ""
+                  }
+                  {...field}
+                />
+              )}
             />
           </ListItem>
           <ListItem>
