@@ -39,6 +39,16 @@ function reducer(state, action) {
       return { ...state, loadingUpdate: false, errorUpdate: "" };
     case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false, errorUpdate: action.payload };
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
+      return {
+        ...state,
+        loadingUpload: false,
+        errorUpload: "",
+      };
+    case "UPLOAD_FAIL":
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
     default:
       return state;
   }
@@ -49,10 +59,12 @@ function ProductEdit({ params }) {
 
   const { state } = useContextState();
 
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: "",
+    });
+
   const {
     handleSubmit,
     control,
@@ -65,6 +77,32 @@ function ProductEdit({ params }) {
   const router = useRouter();
 
   const { userInfo } = state;
+
+  const uploadHandler = async (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append("file", file);
+
+    try {
+      dispatch({ type: "UPLOAD_REQUEST" });
+
+      const { data } = await axios.post("/api/admin/upload", bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
+      dispatch({ type: "UPLOAD_SUCCESS" });
+
+      setValue("image", data.secure_url);
+
+      enqueueSnackbar("File uploaded successfully", { variant: "success" });
+    } catch (err) {
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
+      enqueueSnackbar(getError(err), { variant: "error" });
+    }
+  };
 
   useEffect(() => {
     if (!userInfo) {
@@ -256,6 +294,13 @@ function ProductEdit({ params }) {
                           />
                         )}
                       />
+                    </ListItem>
+                    <ListItem>
+                      <Button variant="contained" component="label">
+                        Upload File
+                        <input type="file" onChange={uploadHandler} hidden />
+                      </Button>
+                      {loadingUpload && <CircularProgress />}
                     </ListItem>
                     <ListItem>
                       <Controller
