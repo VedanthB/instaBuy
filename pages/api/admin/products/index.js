@@ -17,6 +17,7 @@ handler.get(async (req, res) => {
 
 handler.post(async (req, res) => {
   await db.connect();
+
   const newProduct = new Product({
     name: "sample name",
     // eslint-disable-next-line prefer-template
@@ -29,9 +30,11 @@ handler.post(async (req, res) => {
     description: "sample description",
     rating: 0,
     numReviews: 0,
+    // reviews: ["629bfe5b7399d752fa3e649c"],
   });
 
   const product = await newProduct.save();
+
   await db.disconnect();
   res.send({ message: "Product Created", product });
 });

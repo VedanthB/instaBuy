@@ -6,6 +6,7 @@ import {
   CardMedia,
   Grid,
   IconButton,
+  Rating,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -26,7 +27,9 @@ export default function Home({ products }) {
   const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
+
     const { data } = await axios.get(`/api/products/${product._id}`);
+
     if (data.countInStock < quantity) {
       // eslint-disable-next-line no-alert
       window.alert("Sorry. Product is out of stock");
@@ -53,6 +56,7 @@ export default function Home({ products }) {
                     />
                     <CardContent>
                       <Typography>{product.name}</Typography>
+                      <Rating value={product.rating} readOnly />
                     </CardContent>
                   </CardActionArea>
                 </NextLink>
@@ -86,7 +90,9 @@ export default function Home({ products }) {
 
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find({}).lean();
+
+  const products = await Product.find({}, "-reviews").lean();
+
   await db.disconnect();
   return {
     props: {
