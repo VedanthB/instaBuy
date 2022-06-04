@@ -15,12 +15,21 @@ import {
   Button,
   Menu,
   MenuItem,
+  Drawer,
+  Box,
+  List,
+  ListItem,
+  Divider,
+  ListItemText,
 } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 import Switch from "@mui/material/Switch";
 import Cookies from "js-cookie";
-
+import MenuIcon from "@mui/icons-material/Menu";
 import { useSelectedTheme } from "../../hooks";
-import { darkTheme, lightTheme } from "../../utils";
+import { darkTheme, getError, lightTheme } from "../../utils";
 import { useContextState } from "../../context/StateProvider";
 
 const Layout = ({ title, description, children }) => {
@@ -37,6 +46,32 @@ const Layout = ({ title, description, children }) => {
   } = useContextState();
 
   const { setSelectedTheme } = useSelectedTheme();
+
+  const [sidbarVisible, setSidebarVisible] = useState(false);
+
+  const sidebarOpenHandler = () => {
+    setSidebarVisible(true);
+  };
+
+  const sidebarCloseHandler = () => {
+    setSidebarVisible(false);
+  };
+
+  const [categories, setCategories] = useState([]);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/categories`);
+      setCategories(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: "error" });
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const darkModeChangeHandler = () => {
     stateDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
@@ -92,18 +127,60 @@ const Layout = ({ title, description, children }) => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            maxWidth: "1024px",
+            // maxWidth: "1024px",
             margin: "auto",
             width: "100%",
           }}
         >
-          <NextLink href="/" passHref>
-            <Link>
-              <Typography sx={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-                instaBuy
-              </Typography>
-            </Link>
-          </NextLink>
+          <Box display="flex" alignItems="center">
+            <IconButton
+              edge="start"
+              aria-label="open drawer"
+              onClick={sidebarOpenHandler}
+            >
+              <MenuIcon sx={{ color: "#ffffff", textTransform: "initial" }} />
+            </IconButton>
+            <NextLink href="/" passHref>
+              <Link>
+                <Typography sx={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                  instaBuy
+                </Typography>
+              </Link>
+            </NextLink>
+          </Box>
+          <Drawer
+            anchor="left"
+            open={sidbarVisible}
+            onClose={sidebarCloseHandler}
+          >
+            <List>
+              <ListItem>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography>Shopping by category</Typography>
+                  <IconButton aria-label="close" onClick={sidebarCloseHandler}>
+                    <CancelIcon />
+                  </IconButton>
+                </Box>
+              </ListItem>
+              <Divider light />
+              {categories.map((category) => (
+                <NextLink
+                  key={category}
+                  href={`/search?category=${category}`}
+                  passHref
+                >
+                  <ListItem button component="a" onClick={sidebarCloseHandler}>
+                    <ListItemText primary={category} />
+                  </ListItem>
+                </NextLink>
+              ))}
+            </List>
+          </Drawer>
+
           <div sx={{ flexGrow: "1" }} />
           <div>
             <MaterialUISwitch
