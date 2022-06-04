@@ -21,8 +21,10 @@ import {
   ListItem,
   Divider,
   ListItemText,
+  InputBase,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import Switch from "@mui/material/Switch";
@@ -108,6 +110,17 @@ const Layout = ({ title, description, children }) => {
     router.push("/");
   };
 
+  const [query, setQuery] = useState("");
+
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
+
   return (
     <div>
       <Head>
@@ -181,7 +194,44 @@ const Layout = ({ title, description, children }) => {
             </List>
           </Drawer>
 
-          <div sx={{ flexGrow: "1" }} />
+          <div className="search-form">
+            <form
+              onSubmit={submitHandler}
+              style={{
+                border: "1px solid #ffffff",
+                backgroundColor: "#ffffff",
+                borderRadius: 5,
+              }}
+            >
+              <InputBase
+                name="query"
+                sx={{
+                  paddingLeft: 2,
+                  color: "#000000",
+                  "& ::placeholder": {
+                    color: "#606060",
+                  },
+                }}
+                placeholder="Search products"
+                onChange={queryChangeHandler}
+              />
+              <IconButton
+                type="submit"
+                sx={{
+                  backgroundColor: "#e91e63",
+                  padding: 1,
+                  borderRadius: "0 5px 5px 0",
+                  "& span": {
+                    color: "#000000",
+                  },
+                }}
+                aria-label="search"
+              >
+                <SearchIcon />
+              </IconButton>
+            </form>
+          </div>
+
           <div>
             <MaterialUISwitch
               checked={darkMode}

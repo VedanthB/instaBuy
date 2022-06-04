@@ -1,20 +1,7 @@
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  IconButton,
-  Rating,
-  Tooltip,
-  Typography,
-} from "@mui/material";
 import { useRouter } from "next/router";
 import axios from "axios";
-import NextLink from "next/link";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Layout } from "../components";
+import { Grid } from "@mui/material";
+import { Layout, ProductItem } from "../components";
 import { db } from "../utils";
 import Product from "../model/product";
 import { useContextState } from "../context/StateProvider";
@@ -46,40 +33,10 @@ export default function Home({ products }) {
         <Grid container spacing={3}>
           {products.map((product) => (
             <Grid item md={4} key={product.name}>
-              <Card>
-                <NextLink href={`/product/${product.slug}`} passHref>
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      image={product.image}
-                      title={product.name}
-                    />
-                    <CardContent>
-                      <Typography>{product.name}</Typography>
-                      <Rating value={product.rating} readOnly />
-                    </CardContent>
-                  </CardActionArea>
-                </NextLink>
-
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography>₹{product.price}</Typography>
-                  <Tooltip title="add to shopping cart">
-                    <IconButton
-                      color="primary"
-                      aria-label="add to shopping cart"
-                      onClick={() => addToCartHandler(product)}
-                    >
-                      <AddShoppingCartIcon />
-                    </IconButton>
-                  </Tooltip>
-                </CardActions>
-              </Card>
+              <ProductItem
+                product={product}
+                addToCartHandler={addToCartHandler}
+              />
             </Grid>
           ))}
         </Grid>
