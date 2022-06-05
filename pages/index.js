@@ -1,12 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Grid } from "@mui/material";
+import NextLink from "next/link";
+import Carousel from "react-material-ui-carousel";
+import { Grid, Link, Typography } from "@mui/material";
 import { Layout, ProductItem } from "../components";
 import { db } from "../utils";
 import Product from "../model/product";
 import { useContextState } from "../context/StateProvider";
 
-export default function Home({ products }) {
+export default function Home({ topRatedProducts, featuredProducts }) {
   const router = useRouter();
 
   const { state, stateDispatch } = useContextState();
@@ -28,19 +31,35 @@ export default function Home({ products }) {
 
   return (
     <Layout>
-      <div>
-        <h1>Products</h1>
-        <Grid container spacing={3}>
-          {products.map((product) => (
-            <Grid item md={4} key={product.name}>
-              <ProductItem
-                product={product}
-                addToCartHandler={addToCartHandler}
+      <Carousel sx={{ marginTop: "1rem" }} animation="slide">
+        {featuredProducts.map((product) => (
+          <NextLink
+            key={product._id}
+            href={`/product/${product.slug}`}
+            passHref
+          >
+            <Link>
+              <img
+                src={product.featuredImage}
+                alt={product.name}
+                // className={classes.featuredImage}
               />
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+              {console.log(product.featuredImage)}
+            </Link>
+          </NextLink>
+        ))}
+      </Carousel>
+      <Typography variant="h2">Popular Products</Typography>
+      <Grid container spacing={3}>
+        {topRatedProducts.map((product) => (
+          <Grid item md={4} key={product.name}>
+            <ProductItem
+              product={product}
+              addToCartHandler={addToCartHandler}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </Layout>
   );
 }
@@ -48,12 +67,24 @@ export default function Home({ products }) {
 export async function getServerSideProps() {
   await db.connect();
 
-  const products = await Product.find({}, "-reviews").lean();
+  const featuredProductsDocs = await Product.find(
+    { isFeatured: true },
+    "-reviews",
+  )
+    .lean()
+    .limit(3);
+  const topRatedProductsDocs = await Product.find({}, "-reviews")
+    .lean()
+    .sort({
+      rating: -1,
+    })
+    .limit(6);
 
   await db.disconnect();
   return {
     props: {
-      products: products.map(db.convertDocToObj),
+      featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
+      topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
     },
   };
 }

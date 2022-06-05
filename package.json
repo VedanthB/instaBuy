@@ -37,6 +37,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.31.3",
+    "react-material-ui-carousel": "^3.4.2",
     "streamifier": "^0.1.1"
   },
   "devDependencies": {

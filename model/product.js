@@ -16,6 +16,8 @@ const productSchema = new mongoose.Schema(
     reviews: [
       { type: mongoose.Schema.Types.ObjectId, ref: Reviews, required: true },
     ],
+    featuredImage: { type: String },
+    isFeatured: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: true,

@@ -65,17 +65,11 @@ export default function ProductScreen({ product }) {
 
   const [loading, setLoading] = useState(false);
 
-  console.log(product._id);
-
   const fetchReviews = async () => {
     try {
-      console.log(product._id);
-
       const { data } = await axios.get(`/api/products/${product._id}/reviews`);
 
       setReviews(data);
-
-      console.log(data);
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
@@ -119,6 +113,7 @@ export default function ProductScreen({ product }) {
           </Link>
         </NextLink>
       </div>
+
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
           <Image
@@ -153,6 +148,7 @@ export default function ProductScreen({ product }) {
             </ListItem>
           </List>
         </Grid>
+
         <Grid item md={3} xs={12}>
           <Card>
             <List>

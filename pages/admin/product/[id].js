@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-else-return */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useContext, useReducer } from "react";
+import React, { useEffect, useContext, useReducer, useState } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -9,7 +9,9 @@ import NextLink from "next/link";
 import {
   Button,
   Card,
+  Checkbox,
   CircularProgress,
+  FormControlLabel,
   Grid,
   List,
   ListItem,
@@ -59,6 +61,8 @@ function ProductEdit({ params }) {
 
   const { state } = useContextState();
 
+  const [isFeatured, setIsFeatured] = useState(false);
+
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
     useReducer(reducer, {
       loading: true,
@@ -78,7 +82,7 @@ function ProductEdit({ params }) {
 
   const { userInfo } = state;
 
-  const uploadHandler = async (e) => {
+  const uploadHandler = async (e, imageField = "image") => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
@@ -95,7 +99,7 @@ function ProductEdit({ params }) {
 
       dispatch({ type: "UPLOAD_SUCCESS" });
 
-      setValue("image", data.secure_url);
+      setValue(imageField, data.secure_url);
 
       enqueueSnackbar("File uploaded successfully", { variant: "success" });
     } catch (err) {
@@ -119,6 +123,8 @@ function ProductEdit({ params }) {
           setValue("slug", data.slug);
           setValue("price", data.price);
           setValue("image", data.image);
+          setValue("featuredImage", data.featuredImage);
+          setIsFeatured(data.isFeatured);
           setValue("category", data.category);
           setValue("brand", data.brand);
           setValue("countInStock", data.countInStock);
@@ -139,6 +145,7 @@ function ProductEdit({ params }) {
     image,
     brand,
     countInStock,
+    featuredImage,
     description,
   }) => {
     closeSnackbar();
@@ -153,6 +160,8 @@ function ProductEdit({ params }) {
           price,
           category,
           image,
+          isFeatured,
+          featuredImage,
           brand,
           countInStock,
           description,
@@ -163,6 +172,8 @@ function ProductEdit({ params }) {
       dispatch({ type: "UPDATE_SUCCESS" });
 
       enqueueSnackbar("Product updated successfully", { variant: "success" });
+      
+      router.push('/admin/products');
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
@@ -306,6 +317,53 @@ function ProductEdit({ params }) {
                         <input type="file" onChange={uploadHandler} hidden />
                       </Button>
                       {loadingUpload && <CircularProgress />}
+
+                      <ListItem>
+                        <FormControlLabel
+                          label="Is Featured"
+                          control={
+                            <Checkbox
+                              onClick={(e) => setIsFeatured(e.target.checked)}
+                              checked={isFeatured}
+                              name="isFeatured"
+                            />
+                          }
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <Controller
+                          name="featuredImage"
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: true,
+                          }}
+                          render={({ field }) => (
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              id="featuredImage"
+                              label="Featured Image"
+                              error={Boolean(errors.image)}
+                              helperText={
+                                errors.image ? "Featured Image is required" : ""
+                              }
+                              {...field}
+                            />
+                          )}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <Button variant="contained" component="label">
+                          Upload File
+                          <input
+                            type="file"
+                            onChange={(e) => uploadHandler(e, "featuredImage")}
+                            hidden
+                          />
+                        </Button>
+                        {loadingUpload && <CircularProgress />}
+                      </ListItem>
                     </ListItem>
                     <ListItem>
                       <Controller
