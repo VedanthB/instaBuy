@@ -172,8 +172,8 @@ function ProductEdit({ params }) {
       dispatch({ type: "UPDATE_SUCCESS" });
 
       enqueueSnackbar("Product updated successfully", { variant: "success" });
-      
-      router.push('/admin/products');
+
+      router.push("/admin/products");
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
