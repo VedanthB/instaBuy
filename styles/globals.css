@@ -14,3 +14,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.login-form {
+  max-width: 800;
+  margin: "0 auto";
+}
+
+.search-form {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .search-form {
+    display: flex;
+  }
+}
