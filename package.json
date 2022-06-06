@@ -1,0 +1,42 @@
+{
+  "name": "next-insta-buy",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "check-format": "prettier --check .",
+    "check-lint": "eslint . --ext js --ext jsx --ext js",
+    "format": "prettier --write .",
+    "test-all": "npm run check-format && npm run check-lint  && npm run build",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.7.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.2",
+    "@mui/material": "^5.8.1",
+    "axios": "^0.27.2",
+    "js-cookie": "^3.0.1",
+    "mongoose": "^6.3.5",
+    "next": "12.1.6",
+    "next-connect": "^0.12.2",
+    "next-themes": "^0.2.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "husky": "^8.0.0",
+    "prettier": "2.6.2"
+  }
+}
