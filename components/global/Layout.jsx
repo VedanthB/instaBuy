@@ -10,7 +10,6 @@ import {
   Typography,
   Link,
   IconButton,
-  styled,
   Badge,
   Button,
   Menu,
@@ -23,11 +22,11 @@ import {
   ListItemText,
   InputBase,
 } from "@mui/material";
+// import Image from "next/image";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import Switch from "@mui/material/Switch";
 import Cookies from "js-cookie";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelectedTheme } from "../../hooks";
@@ -75,9 +74,9 @@ const Layout = ({ title, description, children }) => {
     fetchCategories();
   }, []);
 
-  const darkModeChangeHandler = () => {
-    stateDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
-  };
+  // const darkModeChangeHandler = () => {
+  //   stateDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
+  // };
 
   useEffect(() => {
     const newDarkMode = !darkMode;
@@ -126,7 +125,29 @@ const Layout = ({ title, description, children }) => {
   return (
     <div>
       <Head>
+        <link
+          rel="shortcut icon"
+          href="https://res.cloudinary.com/supertramp69420/image/upload/v1654524914/instaBuy-logos_white_ltpfgm.png"
+          type="image/x-icon"
+        />
+
+        {/* <!-- css component lib link --> */}
+        <link
+          rel="stylesheet"
+          href="https://argon-css.netlify.app/components/index.css"
+        />
+
+        {/* <!-- font awesome --> */}
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossOrigin="anonymous"
+          referrerpolicy="no-referrer"
+        />
+
         <title>{title ? `${title} - instaBuy` : "instaBuy"}</title>
+
         {description && <meta name="description" content={description} />}
       </Head>
       <AppBar
@@ -196,7 +217,7 @@ const Layout = ({ title, description, children }) => {
             </List>
           </Drawer>
 
-          <div className="search-form">
+          <div classNameName="search-form">
             <form
               onSubmit={submitHandler}
               style={{
@@ -235,11 +256,6 @@ const Layout = ({ title, description, children }) => {
           </div>
 
           <div>
-            <MaterialUISwitch
-              checked={darkMode}
-              onChange={darkModeChangeHandler}
-              sx={{ m: 1 }}
-            />
             <NextLink href="/cart" passHref>
               {cartItems.length > 0 ? (
                 <Badge color="secondary" badgeContent={cartItems.length}>
@@ -260,7 +276,7 @@ const Layout = ({ title, description, children }) => {
                   aria-controls="simple-menu"
                   aria-haspopup="true"
                   onClick={loginClickHandler}
-                  // className={classes.navbarButton}
+                  // classNameName={classNamees.navbarButton}
                   sx={{ color: "#ffffff", textTransform: "initial" }}
                 >
                   {userInfo.name}
@@ -306,63 +322,46 @@ const Layout = ({ title, description, children }) => {
       <Container
         sx={{
           minHeight: "80vh",
+          marginTop: "1rem",
         }}
       >
         {children}
       </Container>
-
-      <footer sx={{ marginTop: 10, textAlign: "center" }}>
-        <Typography> All rights reserved. instaBuy </Typography>
+      <footer
+        style={{ bottom: 0 }}
+        className="docs-footer text-white  mt-10 flex flex-col justify-center align-items-center w-full p-5 z-50 bg-rose-100"
+      >
+        <div className="text-grey-700">
+          Made with
+          <span className="text-rose-700 font-bold ml-1 mr-1">
+            &lt;/&gt;{" "}
+          </span>{" "}
+          by
+          <a
+            href="https://github.com/VedanthB"
+            style={{ padding: 0, textTransform: "none" }}
+            className="ml-1 btn btn-link-rose"
+          >
+            vedanth
+          </a>
+        </div>
+        <div className="flex mt-3 align-items-center justify-center">
+          <a href="https://github.com/VedanthB">
+            <i className="fab fa-github mr-2 text-rose-700" />
+          </a>
+          <a href="https://twitter.com/vedanth_X0X0">
+            <i className="fab fa-twitter mr-2 text-rose-700" />
+          </a>
+          <a href="https://www.linkedin.com/in/vedanth-bora/">
+            <i className="fab fa-linkedin mr-2 text-rose-700" />
+          </a>
+          <a href="https://dev.to/vedanthb">
+            <i className="fab fa-dev text-rose-700" />
+          </a>
+        </div>
       </footer>
     </div>
   );
 };
 
 export default Layout;
-
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-  width: 62,
-  height: 34,
-  padding: 7,
-  "& .MuiSwitch-switchBase": {
-    margin: 1,
-    padding: 0,
-    transform: "translateX(6px)",
-    "&.Mui-checked": {
-      color: "#fff",
-      transform: "translateX(22px)",
-      "& .MuiSwitch-thumb:before": {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-          "#fff",
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
-      },
-      "& + .MuiSwitch-track": {
-        opacity: 1,
-        backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
-      },
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
-    width: 32,
-    height: 32,
-    "&:before": {
-      content: "''",
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      left: 0,
-      top: 0,
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-        "#fff",
-      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
-    },
-  },
-  "& .MuiSwitch-track": {
-    opacity: 1,
-    backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
-    borderRadius: 20 / 2,
-  },
-}));

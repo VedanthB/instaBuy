@@ -31,20 +31,20 @@ export default function Home({ topRatedProducts, featuredProducts }) {
 
   return (
     <Layout>
-      <Carousel sx={{ marginTop: "1rem" }} animation="slide">
+      <Carousel height="400px" sx={{ marginTop: "1rem" }} animation="slide">
         {featuredProducts.map((product) => (
           <NextLink
             key={product._id}
             href={`/product/${product.slug}`}
             passHref
           >
-            <Link>
+            <Link sx={{ display: "flex", justifyContent: "center" }}>
               <img
                 src={product.featuredImage}
                 alt={product.name}
+                style={{ height: "400px" }}
                 // className={classes.featuredImage}
               />
-              {console.log(product.featuredImage)}
             </Link>
           </NextLink>
         ))}

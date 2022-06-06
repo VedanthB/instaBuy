@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Check Prettier standards
-yarn run format ||
+npm run format ||
 (
     echo '🤢🤮🤢🤮 Its F**KING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
             Prettier Check Failed. Run yarn run format, add changes and try commit again.';
@@ -10,9 +10,8 @@ yarn run format ||
 )
 
 
-
 # Check Prettier standards
-yarn run check-format ||
+npm run check-format ||
 (
     echo '🤢🤮🤢🤮 Its F**KING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
             Prettier Check Failed. Run yarn run format, add changes and try commit again.';
@@ -20,7 +19,7 @@ yarn run check-format ||
 )
 
 # Check ESLint Standards
-yarn run check-lint ||
+npm run check-lint ||
 (
         echo '😤🏀👋😤 Get that weak s**t out of here! 😤🏀👋😤 
                 ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
