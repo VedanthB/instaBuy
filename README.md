@@ -35,7 +35,7 @@ email: admin@example.com
 pass: 123456 
 ## Deployment
 
-the project js deployed on vercel
+the project is deployed on vercel
 
 
 ## Tech Stack
