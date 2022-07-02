@@ -52,3 +52,14 @@ the project is deployed on vercel
 
 [API Documentation](https://documenter.getpostman.com/view/14270668/Uz5KkZot)
 
+## Images
+![Screenshot 2022-07-03 at 1 04 47 AM](https://user-images.githubusercontent.com/75097551/177014287-9f57eade-c05f-4097-ac68-5e31056c8a82.png)
+![Screenshot 2022-07-03 at 1 06 10 AM](https://user-images.githubusercontent.com/75097551/177014290-c64d6ce4-cb1a-43db-9663-a216f105d87b.png)
+![Screenshot 2022-07-03 at 1 06 17 AM](https://user-images.githubusercontent.com/75097551/177014292-47a3b52d-624b-4ff1-b367-0c8eaeb5751f.png)
+![Screenshot 2022-07-03 at 1 06 23 AM](https://user-images.githubusercontent.com/75097551/177014293-f1b29e99-17c5-41e7-8c10-6a4d87fb9385.png)
+![Screenshot 2022-07-03 at 1 08 15 AM](https://user-images.githubusercontent.com/75097551/177014294-d01f37d7-2e36-462f-a159-72f89b9feea8.png)
+![Screenshot 2022-07-03 at 1 08 35 AM](https://user-images.githubusercontent.com/75097551/177014295-264cd762-6e78-4b31-aa16-1f62f5515296.png)
+![Screenshot 2022-07-03 at 1 08 41 AM](https://user-images.githubusercontent.com/75097551/177014296-56ffd25b-ceab-45e8-833d-83ee43767c22.png)
+
+
+
