@@ -7,4 +7,7 @@ export { ProductReviews } from "./product/ProductReviews";
 export { CheckoutCard } from "./cart/CheckoutCard";
 export { CartItemsTable } from "./cart/CartItemsTable";
 export { ShippingAddress } from "./shipping/ShippingAddress";
+export { OrderSummary } from "./placeorder/OrderSummary";
+export { PlaceOrderCard } from "./placeorder/PlaceOrderCard";
+
 export { CheckoutWizard, ProductItem };

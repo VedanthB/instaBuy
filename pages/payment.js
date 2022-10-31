@@ -52,6 +52,7 @@ export default function Payment() {
       router.push("/placeorder");
     }
   };
+
   return (
     <Layout title="Payment Method">
       <CheckoutWizard activeStep={2} />
@@ -59,7 +60,7 @@ export default function Payment() {
         onSubmit={submitHandler}
         style={{ maxWidth: 800, margin: "0 auto" }}
       >
-        <Typography component="h1" variant="h1">
+        <Typography align="center" component="h1" variant="h1">
           Payment Method
         </Typography>
         <List>
@@ -76,11 +77,7 @@ export default function Payment() {
                   value="PayPal"
                   control={<Radio />}
                 />
-                <FormControlLabel
-                  label="Stripe"
-                  value="Stripe"
-                  control={<Radio />}
-                />
+
                 <FormControlLabel
                   label="Cash"
                   value="Cash"
