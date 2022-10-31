@@ -71,7 +71,7 @@ function OrderHistory() {
 
   return (
     <Layout title="Order History">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>

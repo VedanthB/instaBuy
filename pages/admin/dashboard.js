@@ -26,21 +26,15 @@ import { Bar } from "react-chartjs-2";
 import { useContextState } from "../../context/StateProvider";
 import { Layout } from "../../components";
 import { getError } from "../../utils";
+import { adminDashboardReducer } from "../../reducers";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, summary: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-}
+const adminDashboardInitState = {
+  loading: true,
+  summary: { salesData: [] },
+  error: "",
+};
 
 function AdminDashboard() {
   const { state } = useContextState();
@@ -49,16 +43,16 @@ function AdminDashboard() {
 
   const { userInfo } = state;
 
-  const [{ loading, error, summary }, dispatch] = useReducer(reducer, {
-    loading: true,
-    summary: { salesData: [] },
-    error: "",
-  });
+  const [{ loading, error, summary }, dispatch] = useReducer(
+    adminDashboardReducer,
+    adminDashboardInitState,
+  );
 
   useEffect(() => {
     if (!userInfo) {
       router.push("/login");
     }
+
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
@@ -75,7 +69,7 @@ function AdminDashboard() {
 
   return (
     <Layout title="Admin Dashboard">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -111,7 +105,7 @@ function AdminDashboard() {
                 ) : error ? (
                   <Typography sx={{ color: "#f04040" }}>{error}</Typography>
                 ) : (
-                  <Grid container spacing={5}>
+                  <Grid container spacing={1}>
                     <Grid item md={3}>
                       <Card raised>
                         <CardContent>
