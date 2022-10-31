@@ -51,7 +51,9 @@ export const PlacedOrderSummary = ({ order }) => {
 
           <ListItem>
             Status:{" "}
-            {isDelivered ? `delivered at ${deliveredAt}` : "not delivered"}
+            {isDelivered
+              ? `Delivered at ${formatDate(deliveredAt)}`
+              : "Not Delivered"}
           </ListItem>
         </List>
       </Card>
@@ -66,7 +68,7 @@ export const PlacedOrderSummary = ({ order }) => {
           </ListItem>
           <ListItem>{paymentMethod}</ListItem>
           <ListItem>
-            Status: {isPaid ? `paid at ${formatDate(paidAt)}` : "not paid"}
+            Status: {isPaid ? `Paid at ${formatDate(paidAt)}` : "Not Paid"}
           </ListItem>
         </List>
       </Card>

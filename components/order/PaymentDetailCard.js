@@ -96,7 +96,9 @@ export const PaymentDetailCard = ({
       <Card sx={{ marginTop: 10, marginBottom: 10 }}>
         <List>
           <ListItem>
-            <Typography variant="h2">Order Summary</Typography>
+            <Typography fontWeight={500} variant="h2">
+              Order Summary
+            </Typography>
           </ListItem>
           <ListItem>
             <Grid container>

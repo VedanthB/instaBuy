@@ -21,21 +21,16 @@ import {
 } from "@mui/material";
 import React, { useEffect, useReducer } from "react";
 import { getError } from "../utils";
-import Layout from "../components/global/Layout";
-import { useContextState } from "../context/StateProvider";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, orders: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-}
+import { useContextState } from "../context/StateProvider";
+import { Layout } from "../components";
+import { orderHistoryReducer } from "../reducers";
+
+const initOrderHistoryState = {
+  loading: true,
+  orders: [],
+  error: "",
+};
 
 function OrderHistory() {
   const { state } = useContextState();
@@ -44,11 +39,10 @@ function OrderHistory() {
 
   const { userInfo } = state;
 
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
-    loading: true,
-    orders: [],
-    error: "",
-  });
+  const [{ loading, error, orders }, dispatch] = useReducer(
+    orderHistoryReducer,
+    initOrderHistoryState,
+  );
 
   useEffect(() => {
     if (!userInfo) {
@@ -69,6 +63,11 @@ function OrderHistory() {
 
     fetchOrders();
   }, []);
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <Layout title="Order History">
@@ -119,16 +118,18 @@ function OrderHistory() {
                         {orders.map((order) => (
                           <TableRow key={order._id}>
                             <TableCell>{order._id.substring(20, 24)}</TableCell>
-                            <TableCell>{order.createdAt}</TableCell>
+                            <TableCell>{formatDate(order.createdAt)}</TableCell>
                             <TableCell>₹{order.totalPrice}</TableCell>
                             <TableCell>
                               {order.isPaid
-                                ? `paid at ${order.paidAt}`
+                                ? `paid at ${formatDate(order.paidAt)}`
                                 : "not paid"}
                             </TableCell>
                             <TableCell>
                               {order.isDelivered
-                                ? `delivered at ${order.deliveredAt}`
+                                ? `delivered at ${formatDate(
+                                    order.deliveredAt,
+                                  )}`
                                 : "not delivered"}
                             </TableCell>
                             <TableCell>
