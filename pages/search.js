@@ -4,7 +4,6 @@
 /* eslint-disable prefer-template */
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-
 import {
   Box,
   Button,
@@ -134,7 +133,7 @@ export default function Search({
 
   return (
     <Layout title="Search">
-      <Grid sx={{ marginTop: "1rem" }} container spacing={1}>
+      <Grid sx={{ marginTop: "1rem" }} container spacing={6}>
         <Grid item md={3}>
           <List>
             <ListItem>
@@ -275,8 +274,11 @@ export async function getServerSideProps({ query }) {
           },
         }
       : {};
+
   const categoryFilter = category && category !== "all" ? { category } : {};
+
   const brandFilter = brand && brand !== "all" ? { brand } : {};
+
   const ratingFilter =
     rating && rating !== "all"
       ? {

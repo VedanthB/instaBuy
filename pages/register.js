@@ -72,6 +72,7 @@ export default function Register() {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
+
   return (
     <Layout title="Register">
       <form
