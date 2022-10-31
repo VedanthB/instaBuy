@@ -29,24 +29,21 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import Cookies from "js-cookie";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useSelectedTheme } from "../../hooks";
-import { darkTheme, getError, lightTheme } from "../../utils";
+
+import { getError } from "../../utils";
 import { useContextState } from "../../context/StateProvider";
 
-const Layout = ({ title, description, children }) => {
+export const Layout = ({ title, description, children }) => {
   const router = useRouter();
 
   const {
     state: {
-      darkMode,
       cart: { cartItems },
       userInfo,
     },
 
     stateDispatch,
   } = useContextState();
-
-  const { setSelectedTheme } = useSelectedTheme();
 
   const [sidbarVisible, setSidebarVisible] = useState(false);
 
@@ -70,22 +67,10 @@ const Layout = ({ title, description, children }) => {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
+
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  // const darkModeChangeHandler = () => {
-  //   stateDispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
-  // };
-
-  useEffect(() => {
-    const newDarkMode = !darkMode;
-
-    Cookies.set("darkMode", newDarkMode ? "ON" : "OFF", { sameSite: "strict" });
-
-    // eslint-disable-next-line no-unused-expressions
-    newDarkMode ? setSelectedTheme(darkTheme) : setSelectedTheme(lightTheme);
-  }, [darkMode]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -150,6 +135,7 @@ const Layout = ({ title, description, children }) => {
 
         {description && <meta name="description" content={description} />}
       </Head>
+
       <AppBar
         position="static"
         sx={{
@@ -327,6 +313,7 @@ const Layout = ({ title, description, children }) => {
       >
         {children}
       </Container>
+
       <footer
         style={{ bottom: 0 }}
         className="docs-footer text-white  mt-10 flex flex-col justify-center align-items-center w-full p-5 z-50 bg-rose-100"
@@ -363,5 +350,3 @@ const Layout = ({ title, description, children }) => {
     </div>
   );
 };
-
-export default Layout;

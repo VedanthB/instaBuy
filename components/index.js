@@ -1,5 +1,8 @@
-import Layout from "./global/Layout";
 import CheckoutWizard from "./shipping/CheckoutWizard";
 import ProductItem from "./global/ProductItem";
 
-export { Layout, CheckoutWizard, ProductItem };
+export { Layout } from "./global/Layout";
+export { ProductDetails } from "./product/ProductDetails";
+export { ProductReviews } from "./product/ProductReviews";
+
+export { CheckoutWizard, ProductItem };
