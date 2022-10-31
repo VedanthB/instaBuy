@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useReducer } from "react";
-import { getError } from "../utils";
+import { formatDate, getError } from "../utils";
 
 import { useContextState } from "../context/StateProvider";
 import { Layout } from "../components";
@@ -63,11 +63,6 @@ function OrderHistory() {
 
     fetchOrders();
   }, []);
-
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   return (
     <Layout title="Order History">

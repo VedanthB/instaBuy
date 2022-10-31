@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import NextLink from "next/link";
+import { formatDate } from "../../utils";
 
 export const PlacedOrderSummary = ({ order }) => {
   const {
@@ -26,11 +27,6 @@ export const PlacedOrderSummary = ({ order }) => {
     isDelivered,
     deliveredAt,
   } = order;
-
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   return (
     <Grid item md={9} xs={12}>

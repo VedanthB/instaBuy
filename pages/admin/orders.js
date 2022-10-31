@@ -21,21 +21,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useContextState } from "../../context/StateProvider";
-import { getError } from "../../utils";
-import Layout from "../../components/global/Layout";
+import { formatDate, getError } from "../../utils";
+import { Layout } from "../../components";
+import { adminOrderReducer } from "../../reducers";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, orders: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-}
+const adminOrderInitState = {
+  loading: true,
+  orders: [],
+  error: "",
+};
 
 function AdminOrders() {
   const { state } = useContextState();
@@ -44,11 +38,10 @@ function AdminOrders() {
 
   const { userInfo } = state;
 
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
-    loading: true,
-    orders: [],
-    error: "",
-  });
+  const [{ loading, error, orders }, dispatch] = useReducer(
+    adminOrderReducer,
+    adminOrderInitState,
+  );
 
   useEffect(() => {
     if (!userInfo) {
@@ -67,9 +60,10 @@ function AdminOrders() {
     };
     fetchData();
   }, []);
+
   return (
     <Layout title="Orders">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -96,6 +90,7 @@ function AdminOrders() {
             </List>
           </Card>
         </Grid>
+
         <Grid item md={9} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -131,16 +126,18 @@ function AdminOrders() {
                             <TableCell>
                               {order.user ? order.user.name : "DELETED USER"}
                             </TableCell>
-                            <TableCell>{order.createdAt}</TableCell>
+                            <TableCell>{formatDate(order.createdAt)}</TableCell>
                             <TableCell>${order.totalPrice}</TableCell>
                             <TableCell>
                               {order.isPaid
-                                ? `paid at ${order.paidAt}`
+                                ? `paid at ${formatDate(order.paidAt)}`
                                 : "not paid"}
                             </TableCell>
                             <TableCell>
                               {order.isDelivered
-                                ? `delivered at ${order.deliveredAt}`
+                                ? `delivered at ${formatDate(
+                                    order.deliveredAt,
+                                  )}`
                                 : "not delivered"}
                             </TableCell>
                             <TableCell>
