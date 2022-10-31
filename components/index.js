@@ -9,5 +9,7 @@ export { CartItemsTable } from "./cart/CartItemsTable";
 export { ShippingAddress } from "./shipping/ShippingAddress";
 export { OrderSummary } from "./placeorder/OrderSummary";
 export { PlaceOrderCard } from "./placeorder/PlaceOrderCard";
+export { PlacedOrderSummary } from "./order/PlacedOrderSummary";
+export { PaymentDetailCard } from "./order/PaymentDetailCard";
 
 export { CheckoutWizard, ProductItem };
