@@ -3,3 +3,4 @@ export { orderHistoryReducer } from "./orderHistroyReducer";
 export { adminDashboardReducer } from "./adminDashboardReducer";
 export { adminOrderReducer } from "./adminOrderReducer";
 export { adminProductsReducer } from "./adminProductsReducer";
+export { adminEditProductReducer } from "./adminEditProductReducer";

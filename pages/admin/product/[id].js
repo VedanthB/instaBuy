@@ -21,40 +21,15 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
-
 import { getError } from "../../../utils";
-
+import { Layout } from "../../../components";
 import { useContextState } from "../../../context/StateProvider";
-import Layout from "../../../components/global/Layout";
+import { adminEditProductReducer } from "../../../reducers";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    case "UPDATE_REQUEST":
-      return { ...state, loadingUpdate: true, errorUpdate: "" };
-    case "UPDATE_SUCCESS":
-      return { ...state, loadingUpdate: false, errorUpdate: "" };
-    case "UPDATE_FAIL":
-      return { ...state, loadingUpdate: false, errorUpdate: action.payload };
-    case "UPLOAD_REQUEST":
-      return { ...state, loadingUpload: true, errorUpload: "" };
-    case "UPLOAD_SUCCESS":
-      return {
-        ...state,
-        loadingUpload: false,
-        errorUpload: "",
-      };
-    case "UPLOAD_FAIL":
-      return { ...state, loadingUpload: false, errorUpload: action.payload };
-    default:
-      return state;
-  }
-}
+const adminEditProductInitState = {
+  loading: true,
+  error: "",
+};
 
 function ProductEdit({ params }) {
   const productId = params.id;
@@ -64,10 +39,7 @@ function ProductEdit({ params }) {
   const [isFeatured, setIsFeatured] = useState(false);
 
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-    });
+    useReducer(adminEditProductReducer, adminEditProductInitState);
 
   const {
     handleSubmit,
@@ -118,7 +90,9 @@ function ProductEdit({ params }) {
           const { data } = await axios.get(`/api/admin/products/${productId}`, {
             headers: { authorization: `Bearer ${userInfo.token}` },
           });
+
           dispatch({ type: "FETCH_SUCCESS" });
+
           setValue("name", data.name);
           setValue("slug", data.slug);
           setValue("price", data.price);
@@ -133,6 +107,7 @@ function ProductEdit({ params }) {
           dispatch({ type: "FETCH_FAIL", payload: getError(err) });
         }
       };
+
       fetchData();
     }
   }, []);
@@ -178,9 +153,10 @@ function ProductEdit({ params }) {
       enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
+
   return (
     <Layout title={`Edit Product ${productId}`}>
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -207,6 +183,7 @@ function ProductEdit({ params }) {
             </List>
           </Card>
         </Grid>
+
         <Grid item md={9} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -316,6 +293,7 @@ function ProductEdit({ params }) {
                         Upload File
                         <input type="file" onChange={uploadHandler} hidden />
                       </Button>
+
                       {loadingUpload && <CircularProgress />}
 
                       <ListItem>
@@ -330,6 +308,7 @@ function ProductEdit({ params }) {
                           }
                         />
                       </ListItem>
+
                       <ListItem>
                         <Controller
                           name="featuredImage"
@@ -353,6 +332,7 @@ function ProductEdit({ params }) {
                           )}
                         />
                       </ListItem>
+
                       <ListItem>
                         <Button variant="contained" component="label">
                           Upload File
