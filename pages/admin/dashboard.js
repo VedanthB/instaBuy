@@ -30,7 +30,7 @@ import { adminDashboardReducer } from "../../reducers";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
-const adminDashboardInitState = {
+export const adminDashboardInitState = {
   loading: true,
   summary: { salesData: [] },
   error: "",
