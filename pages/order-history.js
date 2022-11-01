@@ -64,6 +64,8 @@ function OrderHistory() {
     fetchOrders();
   }, []);
 
+  console.log(orders);
+
   return (
     <Layout title="Order History">
       <Grid container spacing={6}>

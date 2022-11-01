@@ -1,6 +1,6 @@
 import data from "./data";
 import createEmotionCache from "./createEmotionCache";
-import { lightTheme, darkTheme } from "./theme";
+import { lightTheme } from "./theme";
 import db from "./db";
 import { signToken, isAuth, isAdmin } from "./auth";
 import { getError, onError } from "./error";
@@ -8,9 +8,8 @@ import { getError, onError } from "./error";
 export {
   data,
   createEmotionCache,
-  lightTheme,
-  darkTheme,
   db,
+  lightTheme,
   signToken,
   getError,
   onError,

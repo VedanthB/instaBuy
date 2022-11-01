@@ -118,7 +118,7 @@ export const Header = () => {
           display: "flex",
           justifyContent: "space-between",
           marginX: "1rem",
-          paddingY: "1rem",
+          paddingY: "0.5rem",
           width: "100%",
         }}
       >
