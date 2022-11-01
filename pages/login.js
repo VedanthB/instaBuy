@@ -65,16 +65,63 @@ export default function Login() {
     }
   };
 
+  const loginWithUserCredentials = async () => {
+    closeSnackbar();
+
+    try {
+      const { data } = await axios.post("/api/users/login", {
+        email: "user@example.com",
+        password: "123456",
+      });
+
+      stateDispatch({ type: "USER_LOGIN", payload: data });
+
+      Cookies.set("userInfo", JSON.stringify(data), { sameSite: "strict" });
+
+      router.push(redirect || "/");
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      enqueueSnackbar(getError(err), { variant: "error" });
+    }
+  };
+
+  const loginWithAdminCredentials = async () => {
+    closeSnackbar();
+
+    try {
+      const { data } = await axios.post("/api/users/login", {
+        email: "admin@example.com",
+        password: "123456",
+      });
+
+      stateDispatch({ type: "USER_LOGIN", payload: data });
+
+      Cookies.set("userInfo", JSON.stringify(data), { sameSite: "strict" });
+
+      router.push(redirect || "/");
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      enqueueSnackbar(getError(err), { variant: "error" });
+    }
+  };
+
   return (
     <Layout title="Login">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        style={{ maxWidth: 800, margin: "0 auto" }}
+        style={{
+          maxWidth: 700,
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
       >
-        <Typography sx={{ textAlign: "center" }} component="h1" variant="h1">
-          Login
-        </Typography>
-        <List>
+        <List sx={{ width: "100%" }}>
+          <Typography sx={{ textAlign: "center" }} component="h1" variant="h1">
+            Login
+          </Typography>
           <ListItem>
             <Controller
               name="email"
@@ -138,6 +185,25 @@ export default function Login() {
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
               Login
+            </Button>
+          </ListItem>
+
+          <ListItem sx={{ gap: "1rem" }}>
+            <Button
+              onClick={loginWithUserCredentials}
+              variant="text"
+              fullWidth
+              color="primary"
+            >
+              Login With Test User Credentials
+            </Button>
+            <Button
+              onClick={loginWithAdminCredentials}
+              variant="text"
+              fullWidth
+              color="primary"
+            >
+              Login With Test Admin Credentials
             </Button>
           </ListItem>
           <ListItem>

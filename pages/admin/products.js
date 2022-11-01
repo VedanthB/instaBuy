@@ -9,6 +9,7 @@ import {
   Card,
   CircularProgress,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -21,38 +22,19 @@ import {
   Typography,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useContextState } from "../../context";
 import { Layout } from "../../components";
 
 import { getError } from "../../utils";
+import { adminProductsReducer } from "../../reducers";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, products: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    case "CREATE_REQUEST":
-      return { ...state, loadingCreate: true };
-    case "CREATE_SUCCESS":
-      return { ...state, loadingCreate: false };
-    case "CREATE_FAIL":
-      return { ...state, loadingCreate: false };
-    case "DELETE_REQUEST":
-      return { ...state, loadingDelete: true };
-    case "DELETE_SUCCESS":
-      return { ...state, loadingDelete: false, successDelete: true };
-    case "DELETE_FAIL":
-      return { ...state, loadingDelete: false };
-    case "DELETE_RESET":
-      return { ...state, loadingDelete: false, successDelete: false };
-    default:
-      return state;
-  }
-}
+const adminProductsInitState = {
+  loading: true,
+  products: [],
+  error: "",
+};
 
 function AdminProducts() {
   const { state } = useContextState();
@@ -64,11 +46,7 @@ function AdminProducts() {
   const [
     { loading, error, products, loadingCreate, successDelete, loadingDelete },
     dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    products: [],
-    error: "",
-  });
+  ] = useReducer(adminProductsReducer, adminProductsInitState);
 
   useEffect(() => {
     if (!userInfo) {
@@ -144,7 +122,7 @@ function AdminProducts() {
 
   return (
     <Layout title="Products">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -226,22 +204,22 @@ function AdminProducts() {
                             <TableCell>{product.category}</TableCell>
                             <TableCell>{product.countInStock}</TableCell>
                             <TableCell>{product.rating}</TableCell>
-                            <TableCell>
+                            <TableCell sx={{ display: "flex", gap: "1rem" }}>
                               <NextLink
                                 href={`/admin/product/${product._id}`}
                                 passHref
                               >
-                                <Button size="small" variant="contained">
-                                  Edit
-                                </Button>
+                                <IconButton size="small" variant="contained">
+                                  <EditIcon />
+                                </IconButton>
                               </NextLink>{" "}
-                              <Button
+                              <IconButton
                                 onClick={() => deleteHandler(product._id)}
                                 size="small"
                                 variant="contained"
                               >
-                                Delete
-                              </Button>
+                                <DeleteForeverIcon sx={{ color: "red" }} />
+                              </IconButton>
                             </TableCell>
                           </TableRow>
                         ))}

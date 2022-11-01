@@ -48,7 +48,8 @@
         "enforceInMethodNames": true,
         "allowFunctionParams": true
       }
-    ]
+    ],
+    "react/jsx-no-constructed-context-values": ["off"]
   },
   "settings": {
     "react": {

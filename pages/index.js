@@ -4,6 +4,7 @@ import axios from "axios";
 import NextLink from "next/link";
 import Carousel from "react-material-ui-carousel";
 import { Grid, Link, Typography } from "@mui/material";
+import Image from "next/image";
 import { Layout, ProductItem } from "../components";
 import { db } from "../utils";
 import Product from "../model/product";
@@ -39,18 +40,28 @@ export default function Home({ topRatedProducts, featuredProducts }) {
             passHref
           >
             <Link sx={{ display: "flex", justifyContent: "center" }}>
-              <img
+              <Image
                 src={product.featuredImage}
                 alt={product.name}
-                style={{ height: "400px" }}
-                // className={classes.featuredImage}
+                height="400px"
+                width="100%"
+                layout="fill"
+                objectFit="contain"
               />
             </Link>
           </NextLink>
         ))}
       </Carousel>
-      <Typography variant="h2">Popular Products</Typography>
-      <Grid container spacing={3}>
+
+      <Typography
+        sx={{ fontSize: "3rem", marginBottom: "4rem", marginTop: "4rem" }}
+        align="center"
+        variant="h2"
+      >
+        Popular Products
+      </Typography>
+
+      <Grid sx={{ marginBottom: "8rem" }} container spacing={6}>
         {topRatedProducts.map((product) => (
           <Grid item md={4} key={product.name}>
             <ProductItem

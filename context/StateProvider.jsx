@@ -4,8 +4,6 @@ import Cookies from "js-cookie";
 const StateContext = createContext();
 
 const initialState = {
-  // eslint-disable-next-line no-unneeded-ternary
-  darkMode: false,
   cart: {
     cartItems: [],
     shippingAddress: {},
@@ -17,12 +15,6 @@ const initialState = {
 const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "DARK_MODE_ON":
-      return { ...state, darkMode: true };
-
-    case "DARK_MODE_OFF":
-      return { ...state, darkMode: false };
-
     case "CART_ADD_ITEM": {
       const newItem = payload;
 
@@ -90,18 +82,8 @@ const reducer = (state, action) => {
 
 export const StateContextProvider = ({ children }) => {
   const [state, stateDispatch] = useReducer(reducer, initialState);
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const value = { state, stateDispatch };
 
   useEffect(() => {
-    if (Cookies.get("darkMode") === "ON") {
-      stateDispatch({ type: "DARK_MODE_ON" });
-    }
-
-    if (Cookies.get("darkMode") === "OFF") {
-      stateDispatch({ type: "DARK_MODE_OFF" });
-    }
-
     if (Cookies.get("userInfo")) {
       stateDispatch({
         type: "USER_LOGIN",
@@ -132,7 +114,9 @@ export const StateContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <StateContext.Provider value={value}>{children}</StateContext.Provider>
+    <StateContext.Provider value={{ state, stateDispatch }}>
+      {children}
+    </StateContext.Provider>
   );
 };
 

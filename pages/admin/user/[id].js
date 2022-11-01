@@ -23,46 +23,22 @@ import { Controller, useForm } from "react-hook-form";
 import { useContextState } from "../../../context";
 import { getError } from "../../../utils";
 import Layout from "../../../components/global/Layout";
+import { adminEditUserReducer } from "../../../reducers";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    case "UPDATE_REQUEST":
-      return { ...state, loadingUpdate: true, errorUpdate: "" };
-    case "UPDATE_SUCCESS":
-      return { ...state, loadingUpdate: false, errorUpdate: "" };
-    case "UPDATE_FAIL":
-      return { ...state, loadingUpdate: false, errorUpdate: action.payload };
-    case "UPLOAD_REQUEST":
-      return { ...state, loadingUpload: true, errorUpload: "" };
-    case "UPLOAD_SUCCESS":
-      return {
-        ...state,
-        loadingUpload: false,
-        errorUpload: "",
-      };
-    case "UPLOAD_FAIL":
-      return { ...state, loadingUpload: false, errorUpload: action.payload };
-
-    default:
-      return state;
-  }
-}
+const adminEditUserInitState = {
+  loading: true,
+  error: "",
+};
 
 function UserEdit({ params }) {
   const { state } = useContextState();
 
   const userId = params.id;
 
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(
+    adminEditUserReducer,
+    adminEditUserInitState,
+  );
 
   const {
     handleSubmit,
@@ -124,7 +100,7 @@ function UserEdit({ params }) {
   };
   return (
     <Layout title={`Edit User ${userId}`}>
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>

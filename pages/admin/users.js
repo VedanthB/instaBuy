@@ -24,28 +24,13 @@ import NextLink from "next/link";
 import { useContextState } from "../../context";
 import { getError } from "../../utils";
 import { Layout } from "../../components";
+import { adminUsersReducer } from "../../reducers";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, users: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    case "DELETE_REQUEST":
-      return { ...state, loadingDelete: true };
-    case "DELETE_SUCCESS":
-      return { ...state, loadingDelete: false, successDelete: true };
-    case "DELETE_FAIL":
-      return { ...state, loadingDelete: false };
-    case "DELETE_RESET":
-      return { ...state, loadingDelete: false, successDelete: false };
-    default:
-      return state;
-  }
-}
+const adminUsersInitState = {
+  loading: true,
+  users: [],
+  error: "",
+};
 
 function AdminUsers() {
   const { state } = useContextState();
@@ -55,11 +40,7 @@ function AdminUsers() {
   const { userInfo } = state;
 
   const [{ loading, error, users, successDelete, loadingDelete }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      users: [],
-      error: "",
-    });
+    useReducer(adminUsersReducer, adminUsersInitState);
 
   useEffect(() => {
     if (!userInfo) {
@@ -104,7 +85,7 @@ function AdminUsers() {
   };
   return (
     <Layout title="Users">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>

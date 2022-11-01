@@ -76,7 +76,7 @@ function Profile() {
   };
   return (
     <Layout title="Profile">
-      <Grid container spacing={1}>
+      <Grid container spacing={6}>
         <Grid item md={3} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
@@ -96,15 +96,20 @@ function Profile() {
         <Grid item md={9} xs={12}>
           <Card sx={{ marginTop: 10, marginBottom: 10 }}>
             <List>
-              <ListItem>
-                <Typography component="h1" variant="h1">
+              <ListItem sx={{ width: "100%" }}>
+                <Typography
+                  sx={{ width: "100%" }}
+                  align="center"
+                  component="h1"
+                  variant="h1"
+                >
                   Profile
                 </Typography>
               </ListItem>
               <ListItem>
                 <form
                   onSubmit={handleSubmit(submitHandler)}
-                  style={{ maxWidth: 800, margin: "0 auto" }}
+                  style={{ maxWidth: 800, margin: "0 auto", width: "100%" }}
                 >
                   <List>
                     <ListItem>
@@ -118,6 +123,7 @@ function Profile() {
                         }}
                         render={({ field }) => (
                           <TextField
+                            size="small"
                             variant="outlined"
                             fullWidth
                             id="name"
@@ -147,6 +153,7 @@ function Profile() {
                         }}
                         render={({ field }) => (
                           <TextField
+                            size="small"
                             variant="outlined"
                             fullWidth
                             id="email"
@@ -178,6 +185,7 @@ function Profile() {
                         }}
                         render={({ field }) => (
                           <TextField
+                            size="small"
                             variant="outlined"
                             fullWidth
                             id="password"
@@ -207,6 +215,7 @@ function Profile() {
                         }}
                         render={({ field }) => (
                           <TextField
+                            size="small"
                             variant="outlined"
                             fullWidth
                             id="confirmPassword"
