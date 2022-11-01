@@ -76,13 +76,21 @@ export default function Register() {
   return (
     <Layout title="Register">
       <form
-        style={{ maxWidth: 800, margin: "0 auto" }}
+        style={{
+          maxWidth: 700,
+
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
         onSubmit={handleSubmit(submitHandler)}
       >
-        <Typography component="h1" variant="h1">
-          Register
-        </Typography>
-        <List>
+        <List sx={{ width: "100%" }}>
+          <Typography align="center" component="h1" variant="h1">
+            Register
+          </Typography>
           <ListItem>
             <Controller
               name="name"

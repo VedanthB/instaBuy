@@ -109,12 +109,19 @@ export default function Login() {
     <Layout title="Login">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        style={{ maxWidth: 800, margin: "0 auto" }}
+        style={{
+          maxWidth: 700,
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
       >
-        <Typography sx={{ textAlign: "center" }} component="h1" variant="h1">
-          Login
-        </Typography>
-        <List>
+        <List sx={{ width: "100%" }}>
+          <Typography sx={{ textAlign: "center" }} component="h1" variant="h1">
+            Login
+          </Typography>
           <ListItem>
             <Controller
               name="email"
